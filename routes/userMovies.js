@@ -11,8 +11,14 @@ const UserMoviesService = require('../services/userMoviesService');
 const { userIdSchema } = require('../utils/schemas/userSchema');
 const userMoviesService = new UserMoviesService();
 
+//Para protejer las rutas
+const protectRoutes = require('../utils/middlewares/protectRoutes');
+
 const userMoviesAPI = (app) => {
   const router = express.Router();
+  //middleware para proteger las rutas
+  app.use(protectRoutes);
+
   app.use('/api/user-movies', router);
 
   //Petición get all movies

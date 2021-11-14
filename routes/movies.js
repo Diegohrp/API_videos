@@ -18,10 +18,16 @@ const {
   SIXTY_MINUTES_IN_SECONDS,
 } = require('../utils/time');
 
+//Para protejer las rutas
+const protectRoutes = require('../utils/middlewares/protectRoutes');
+
 //Recibe el parámetro app, el cual es la app de express.
 const moviesAPI = (app) => {
   //Para crear nuestra ruta: URL donde se hace la petición GET
   const router = express.Router();
+  //middleware para proteger las rutas
+  app.use(protectRoutes);
+
   app.use('/api/movies', router);
 
   //Petición GET: desde el home / (o sea /api/movies)
