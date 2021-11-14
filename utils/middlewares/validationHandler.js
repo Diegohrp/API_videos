@@ -17,7 +17,6 @@ function validationHandler(schema, check = 'body') {
     //Tomamos el body del request, lo validamos con el
     //schema, y si no cumple se crea un error.
     const error = validateData(req[check], schema);
-
     //Si hay error, deja que express maneje el error con
     //un middleware de error (además el error creado es de formato boom),
     //de lo contrario ejecuta otro middleware

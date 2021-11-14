@@ -12,6 +12,9 @@ const {
 //middleware not found 404
 const notFoundHandler = require('./utils/middlewares/notFoundHandler');
 
+//API para autenticar usuario SignIn
+const authAPI = require('./routes/auth');
+
 //Se importa nuestro controlador moviesAPI /routes
 const moviesAPI = require('./routes/movies');
 
@@ -20,18 +23,20 @@ const userMoviesAPI = require('./routes/userMovies');
 
 //body parser, para que pueda comprender JSON. (middleware)
 app.use(express.json());
+
 //La función se encarga de gestionar las peticiones, sólo le pasamos app.
 //(middleware)
+authAPI(app);
 moviesAPI(app);
 userMoviesAPI(app);
+
+//notFound handler
+app.use(notFoundHandler);
 
 //Los middlewares de error van al final del que realiza las peticiones
 app.use(logErrors);
 app.use(wrapError);
 app.use(errorHandler);
-
-//notFound handler
-app.use(notFoundHandler);
 
 app.listen(config.port, () => {
   console.log(`Listening: http://localhost:${config.port}`);

@@ -1,9 +1,10 @@
 const MongoLib = require('../lib/mongo');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 
-class userService {
+class UserService {
   constructor() {
-    this.collection = 'user';
+    this.collection = 'users';
     this.mongoDB = new MongoLib();
   }
 
@@ -12,7 +13,7 @@ class userService {
     return user;
   }
 
-  async createUser(user) {
+  async createUser({ user }) {
     const { name, email, password } = user;
     //La contraseña se guardará como un hash, no como txt plano
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -21,8 +22,10 @@ class userService {
       name,
       email,
       password: hashedPassword,
+      isAdmin: false,
     });
 
     return createUserId;
   }
 }
+module.exports = UserService;
