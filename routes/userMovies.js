@@ -13,6 +13,7 @@ const userMoviesService = new UserMoviesService();
 
 //Para protejer las rutas
 const protectRoutes = require('../utils/middlewares/protectRoutes');
+const scopesValidationHandler = require('../utils/middlewares/scopesValidationHandler');
 
 const userMoviesAPI = (app) => {
   const router = express.Router();
@@ -42,13 +43,14 @@ const userMoviesAPI = (app) => {
   //Añadir película a la lista del usuario
   router.post(
     '/',
+    scopesValidationHandler(['create:user-movies']),
     validationHandler(createUserMovieSchema),
     async (req, res, next) => {
       const userMovie = req.body;
       try {
-        const userMovieCreated = await userMoviesService.createUserMovie(
-          userMovie
-        );
+        const userMovieCreated = await userMoviesService.createUserMovie({
+          userMovie,
+        });
         res.status(201).json({
           data: userMovieCreated,
           msg: 'Movie added to your list',
@@ -62,6 +64,7 @@ const userMoviesAPI = (app) => {
   //eliminar película del usuario
   router.delete(
     '/:userMovieId',
+    scopesValidationHandler(['delete:user-movies']),
     validationHandler({ userMovieId: userMovieIdSchema }, 'params'),
     async (req, res, next) => {
       const { userMovieId } = req.params;
