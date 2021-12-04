@@ -14,8 +14,14 @@ const createUserSchema = joi.object({
   email: emailSchema,
   password: passwordSchema,
 });
-
+const createProviderUserSchema = joi.object({
+  name: nameSchema,
+  email: emailSchema,
+  password: passwordSchema,
+  apiKeyToken: joi.string().required(),
+});
 module.exports = {
   userIdSchema,
   createUserSchema,
+  createProviderUserSchema,
 };
